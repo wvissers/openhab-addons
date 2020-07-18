@@ -1,56 +1,91 @@
-# AlarmClock Binding
+# <bindingName> Alarmclock
 
-_Give some details about what this binding is meant for - a protocol, system, specific device._
+This is an experimental binding to a virtual alarm clock. I know there are different opinions to have an alarmclock like this as a binding rather than another trigger for a rule engine, but I think nevertheless that it makes some sense. Please let me explain.
 
-_If possible, provide some resources like pictures, a YouTube video, etc. to give an impression of what can be done with this binding. You can place such resources into a `doc` folder next to this README.md._
+The openHAB system is very strong in supporting sitemaps on a variety of devices, including mobile Android and iOS devices. It is a nice advantage if day-to-day operation of the openHAB system can be done on all those devices. This implies using only the limited set of widgets a sitemap supports, like Text, Frame, Switch, Slider, Setpoint etc.   
+
+Suppose you have an openHAB rule to switch off some group of lights at a certain time, but you want to change the setting from time to time. When having the actual alarmclock available as a binding, you could include the setting feature to a standard sitemap. This is exactly what this binding offers. Please share different thoughts about this subject, because I realize from an architectural point of view this is kind of a strange binding. 
+
+In addition to the standard alarmclock, there are sunrise/sunset clocks and a countdown timer included in this binding.
 
 ## Supported Things
 
-_Please describe the different supported things / devices within this section._
-_Which different types are supported, which models were tested etc.?_
-_Note that it is planned to generate some part of this based on the XML files within ```src/main/resources/ESH-INF/thing``` of your binding._
+The binding uses the system clock for the current time, and checks every minute if one of the trigger times (either on or off) are reached. It supports an alarmclock, settable with a precision of 1 minute for both on and off times. In addition, clocks that switches on at a specific time, and switches off at sunset (allowing for an offset from the sunset time) or the other way around are supported.
+It also supports a timer, that counts down in seconds from a certain settable starting point.
+
+## Quick start
+
+For a quick start to review this binding, proceed as follows:
+
+1. Download the file org.openhab.binding.alarmclock-2.4.0-SNAPSHOT.jar in the target folder of this repository.
+2. Copy this file to the addons folder of the operational openHAB system.
+3. Use the Paper UI to create a new thing, using the "Alarmclock" binding.
+4. With the Paper UI, set the (default) times, days, offsets etc. to values of your choice. 
+5. Add some items as desired.
+6. See the alarmclock in action, e.g. using the Control section of the Paper UI or in a sitemap (see example below).
 
 ## Discovery
 
-_Describe the available auto-discovery features here. Mention for what it works and what needs to be kept in mind when using it._
+Auto-discovery is not applicable to this binding. Default on and off times may be specified using e.g. the Paper UI. Just add a thing from the Alarmclock binding, choose the Alarmclock thing, and specify the on and off hours and minutes.
 
 ## Binding Configuration
 
-_If your binding requires or supports general configuration settings, please create a folder ```cfg``` and place the configuration file ```<bindingId>.cfg``` inside it. In this section, you should link to this file and provide some information about the options. The file could e.g. look like:_
-
-```
-# Configuration for the Philips Hue Binding
-#
-# Default secret key for the pairing of the Philips Hue Bridge.
-# It has to be between 10-40 (alphanumeric) characters
-# This may be changed by the user for security reasons.
-secret=openHABSecret
-```
-
-_Note that it is planned to generate some part of this based on the information that is available within ```src/main/resources/ESH-INF/binding``` of your binding._
-
-_If your binding does not offer any generic configurations, you can remove this section completely._
+There is no binding configuration necessary. Place the alarmclock jar file into the addons directory as described above and the binding will be supported.
 
 ## Thing Configuration
 
-_Describe what is needed to manually configure a thing, either through the (Paper) UI or via a thing-file. This should be mainly about its mandatory and optional configuration parameters. A short example entry for a thing file can help!_
-
-_Note that it is planned to generate some part of this based on the XML files within ```src/main/resources/ESH-INF/thing``` of your binding._
+Configuring the alarmclock thing is quite straightforward. When creating the thing with the Paper UI you are prompted for entering the thing name, ontime (hour and minutes) and offtime (hour and minutes) or the other supported settings.  
 
 ## Channels
 
-_Here you should provide information about available channel types, what their meaning is and how they can be used._
+The channels can be retrieved from the Paper UI after configuring. They should be reasonably self-explaining.
 
-_Note that it is planned to generate some part of this based on the XML files within ```src/main/resources/ESH-INF/thing``` of your binding._
-
-| channel  | type   | description                  |
-|----------|--------|------------------------------|
-| control  | Switch | This is the control channel  |
 
 ## Full Example
 
-_Provide a full usage example based on textual configuration files (*.things, *.items, *.sitemap)._
+Create the thing using the Paper UI. It will show the relevant configuration settings and let you define the switching on/switching off times.
 
-## Any custom content here!
+```
+// Clock item definition example
+String FF_Clock_On          "Alarm on [%s]"     <clock>  { channel = "alarmclock:alarm:example:onTime"}
+String FF_Clock_Off         "Alarm off [%s]"    <clock>  { channel = "alarmclock:alarm:example:offTime"}
+Switch FF_Clock_Status      "Status"            <clock>  { channel = "alarmclock:alarm:example:status" } 
+Switch FF_Clock_Enabled     "Enabled"           <clock>  { channel = "alarmclock:alarm:example:enabled" } 
+Switch FF_Clock_DayEnabled  "Active today [%s]" <clock>  { channel = "alarmclock:alarm:example:dayEnabled" } 
+String FF_Clock_Days        "Days active [%s]"  <clock>  { channel = "alarmclock:alarm:example:days" } 
+```
 
-_Feel free to add additional sections for whatever you think should also be mentioned about your binding!_
+In a sitemap use these items, e.g. as follows:
+
+```
+Text label="Example" icon="clock" {
+    Text     item=FF_Clock_On
+    Text     item=FF_Clock_Off
+    Switch   item=FF_Clock_Status
+    Switch   item=FF_Clock_Enabled
+    Switch   item=FF_Clock_DayEnabled
+    Text     item=FF_Clock_Days
+}
+
+```
+
+The alarmclock has a trigger channel, that triggers ON at the onTime moment, and OFF at the offTime moment. Use this channel in two separate rules to trigger different actions, e.g.
+
+```
+// Switch something on
+rule "Something on"
+    when
+        Channel "alarmclock:alarm:example:triggered" triggered ON
+    then
+        sendCommand(Some_Item, ON)
+end
+
+// Switch something off.
+rule "Something off"
+    when
+        Channel "alarmclock:alarm:example:triggered" triggered OFF
+    then
+        sendCommand(Some_Item, OFF)
+end
+```
+
