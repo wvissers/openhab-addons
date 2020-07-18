@@ -17,7 +17,7 @@ It also supports a timer, that counts down in seconds from a certain settable st
 
 For a quick start to review this binding, proceed as follows:
 
-1. Download the file org.openhab.binding.alarmclock-2.4.0-SNAPSHOT.jar in the target folder of this repository.
+1. Download the file org.openhab.binding.alarmclock-2.5.x-SNAPSHOT.jar in the target folder of this repository.
 2. Copy this file to the addons folder of the operational openHAB system.
 3. Use the Paper UI to create a new thing, using the "Alarmclock" binding.
 4. With the Paper UI, set the (default) times, days, offsets etc. to values of your choice. 
