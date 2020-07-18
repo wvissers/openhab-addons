@@ -1,12 +1,16 @@
 /**
- * Copyright (c) 2010-2018 by the respective copyright holders.
+ * Copyright (c) 2010-2020 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
-package org.openhab.binding.alarmclock.internal;
+package org.openhab.binding.alarmclock.internal.handlers;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -15,6 +19,8 @@ import java.util.Date;
 import org.eclipse.smarthome.config.core.Configuration;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingStatus;
+import org.openhab.binding.alarmclock.internal.system.SunriseSunset;
+import org.openhab.binding.alarmclock.internal.system.SystemSunClock;
 
 /**
  * This clock calculates the sunrise and sunset times based on the
@@ -23,11 +29,12 @@ import org.eclipse.smarthome.core.thing.ThingStatus;
  * @author wim
  *
  */
-public class SunriseClockHandler extends AbstractSunClockHandler {
+public class SunClockHandler extends AbstractSunClockHandler {
 
+    private int onOffset;
     private int offOffset;
 
-    public SunriseClockHandler(Thing thing) {
+    public SunClockHandler(Thing thing) {
         super(thing);
     }
 
@@ -43,18 +50,22 @@ public class SunriseClockHandler extends AbstractSunClockHandler {
         calendar.add(Calendar.MINUTE, offOffset);
         offHour = calendar.get(Calendar.HOUR_OF_DAY); // gets hour in 24h format
         offMinute = calendar.get(Calendar.MINUTE);
-        setValid((onHour * 100 + onMinute) < (offHour * 100 + offMinute));
+
+        Date sunset = sunriseSunset.getSunset();
+        calendar.setTime(sunset); // assigns calendar to given date
+        calendar.add(Calendar.MINUTE, onOffset);
+        onHour = calendar.get(Calendar.HOUR_OF_DAY); // gets hour in 24h format
+        onMinute = calendar.get(Calendar.MINUTE);
     }
 
     @Override
     public void initialize() {
-        logger.debug("Initializing SunriseClock handler.");
+        logger.debug("Initializing SunClock handler.");
         super.initialize();
 
         Configuration config = getThing().getConfiguration();
 
-        onHour = ((BigDecimal) config.get("onHour")).intValue();
-        onMinute = ((BigDecimal) config.get("onMinute")).intValue();
+        onOffset = ((BigDecimal) config.get("onOffset")).intValue();
         offOffset = ((BigDecimal) config.get("offOffset")).intValue();
 
         // TODO: Initialize the thing. If done set status to ONLINE to indicate proper working.

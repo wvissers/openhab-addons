@@ -1,15 +1,22 @@
 /**
- * Copyright (c) 2010-2018 by the respective copyright holders.
+ * Copyright (c) 2010-2020 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
-package org.openhab.binding.alarmclock.internal;
+package org.openhab.binding.alarmclock.internal.system;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
+
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Object to encapsulate a compact local time hours/minutes/dayofweek.
@@ -17,11 +24,12 @@ import java.time.ZonedDateTime;
  * @author Wim Vissers.
  *
  */
+@NonNullByDefault
 public class CompactTime {
 
     private final int hour;
     private final int minute;
-    private final DayOfWeek dayOfWeek;
+    private final @Nullable DayOfWeek dayOfWeek;
 
     /**
      * Create a local CompactTime from the system.
@@ -35,7 +43,7 @@ public class CompactTime {
 
     /**
      * Create a local CompactTime with only hours and minutes, but no DayOfWeek.
-     * 
+     *
      * @param hour
      * @param minute
      */
@@ -49,9 +57,9 @@ public class CompactTime {
      * Return true if the time (hour:minute) of this instance is within the timeframe previous and current. The reason
      * is to make sure a switching event is not missed, even when for whatever reason to time between ticks exceeds the
      * minute.
-     * 
+     *
      * @param previous the previous time. Must be non null.
-     * @param current  the current time. Must be non null.
+     * @param current the current time. Must be non null.
      * @return
      */
     public boolean isSwitchTime(CompactTime previous, CompactTime current) {
@@ -60,7 +68,7 @@ public class CompactTime {
 
     /**
      * Return true if this time is less than the given other time.
-     * 
+     *
      * @param other the other time. Must be non null.
      * @return
      */
@@ -70,7 +78,7 @@ public class CompactTime {
 
     /**
      * Return true if this time is less than or equal to the given other time.
-     * 
+     *
      * @param other the other time. Must be non null.
      * @return
      */
@@ -80,7 +88,7 @@ public class CompactTime {
 
     /**
      * Convert the time to a single integer value for easy handling.
-     * 
+     *
      * @return hour * 100 + minute.
      */
     private int getCanonicalTime() {
@@ -95,7 +103,7 @@ public class CompactTime {
         return minute;
     }
 
-    public DayOfWeek getDayOfWeek() {
+    public @Nullable DayOfWeek getDayOfWeek() {
         return dayOfWeek;
     }
 

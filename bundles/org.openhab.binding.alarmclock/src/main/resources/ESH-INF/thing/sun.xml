@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <thing:thing-descriptions bindingId="alarmclock"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:thing="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0"
-	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/thing-description-1.0.0.xsd">
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
 
 	<!-- Sun Thing Type -->
 	<thing-type id="sun">
@@ -16,12 +16,12 @@
 			<channel id="enabled" typeId="enabled" />
 			<channel id="sunrise" typeId="sunrise" />
 			<channel id="sunset" typeId="sunset" />
-            <channel id="dayEnabled" typeId="dayEnabled" />
-            <channel id="time" typeId="time" />
-            <channel id="timeZone" typeId="timeZone" />
-            <channel id="dayOfWeek" typeId="dayOfWeek" />
-            <channel id="days" typeId="days" />
-            <channel id="triggered" typeId="triggered" />
+			<channel id="dayEnabled" typeId="dayEnabled" />
+			<channel id="time" typeId="time" />
+			<channel id="timeZone" typeId="timeZone" />
+			<channel id="dayOfWeek" typeId="dayOfWeek" />
+			<channel id="days" typeId="days" />
+			<channel id="triggered" typeId="triggered" />
 		</channels>
 		<config-description>
 			<parameter name="onOffset" type="decimal">

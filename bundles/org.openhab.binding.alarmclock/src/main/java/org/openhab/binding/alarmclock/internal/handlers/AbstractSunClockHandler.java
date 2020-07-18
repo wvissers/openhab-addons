@@ -1,15 +1,19 @@
 /**
- * Copyright (c) 2010-2018 by the respective copyright holders.
+ * Copyright (c) 2010-2020 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
-package org.openhab.binding.alarmclock.internal;
+package org.openhab.binding.alarmclock.internal.handlers;
 
 import static org.openhab.binding.alarmclock.internal.AlarmClockBindingConstants.*;
-import static org.openhab.binding.alarmclock.internal.Constants.*;
+import static org.openhab.binding.alarmclock.internal.system.Constants.*;
 
 import org.eclipse.smarthome.core.library.types.OnOffType;
 import org.eclipse.smarthome.core.library.types.PointType;
@@ -17,7 +21,11 @@ import org.eclipse.smarthome.core.thing.ChannelUID;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.types.Command;
 import org.eclipse.smarthome.core.types.RefreshType;
-import org.openhab.binding.alarmclock.internal.ClockManager.Event;
+import org.openhab.binding.alarmclock.internal.system.ClockManager;
+import org.openhab.binding.alarmclock.internal.system.SunriseSunset;
+import org.openhab.binding.alarmclock.internal.system.SystemHelper;
+import org.openhab.binding.alarmclock.internal.system.SystemSunClock;
+import org.openhab.binding.alarmclock.internal.system.ClockManager.Event;
 
 /**
  * This clock calculates the sunrise and sunset times based on the

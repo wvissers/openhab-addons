@@ -1,12 +1,16 @@
 /**
- * Copyright (c) 2010-2018 by the respective copyright holders.
+ * Copyright (c) 2010-2020 Contributors to the openHAB project
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
  */
-package org.openhab.binding.alarmclock.internal;
+package org.openhab.binding.alarmclock.internal.system;
 
 import java.util.List;
 import java.util.Map;
@@ -14,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BiConsumer;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +32,7 @@ import org.slf4j.LoggerFactory;
  * @author Wim Vissers
  *
  */
+@NonNullByDefault
 public class EventEmitter<E, P1, P2> {
 
     // The collection with triggers.
@@ -41,25 +47,25 @@ public class EventEmitter<E, P1, P2> {
     public EventEmitter() {
         triggers = new ConcurrentHashMap<>();
     }
-    
+
     /**
      * Add a handler for the given event. Give key as a unique object, used to be able to remove certain handlers.
      *
-     * @param event    the event to trigger on.
+     * @param event the event to trigger on.
      * @param callback the callback function to call.
-     * @param key      a reference to typically the sender, used when removing things.
+     * @param key a reference to typically the sender, used when removing things.
      * @return this EventEmitter to enable chaining.
      */
     public EventEmitter<E, P1, P2> on(E event, BiConsumer<P1, P2> callback, Object key) {
         return onHandler(event, callback, key, false);
     }
-    
+
     /**
      * Add a handler for the given event. Give key as a unique object, used to be able to remove certain handlers.
      *
-     * @param event    the event to trigger on.
+     * @param event the event to trigger on.
      * @param callback the callback function to call.
-     * @param key      a reference to typically the sender, used when removing things.
+     * @param key a reference to typically the sender, used when removing things.
      * @return this EventEmitter to enable chaining.
      */
     public EventEmitter<E, P1, P2> once(E event, BiConsumer<P1, P2> callback, Object key) {
@@ -69,9 +75,9 @@ public class EventEmitter<E, P1, P2> {
     /**
      * Add a handler for the given event. Give key as a unique object, used to be able to remove certain triggers.
      *
-     * @param event    the event to trigger on.
+     * @param event the event to trigger on.
      * @param callback the callback function to call.
-     * @param key      a reference to typically the sender, used when removing things.
+     * @param key a reference to typically the sender, used when removing things.
      * @return this EventEmitter to enable chaining.
      */
     protected EventEmitter<E, P1, P2> onHandler(E event, BiConsumer<P1, P2> callback, Object key, boolean once) {
@@ -122,6 +128,7 @@ public class EventEmitter<E, P1, P2> {
      * @author Wim Vissers.
      *
      */
+    @NonNullByDefault
     private class CompoundConsumer<F, Q1, Q2> {
         private final boolean once;
         private final Object key;

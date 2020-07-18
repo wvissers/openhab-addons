@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <thing:thing-descriptions bindingId="alarmclock"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:thing="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0"
-	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/thing-description-1.0.0.xsd">
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
 
 	<!-- Channel Type -->
 	<channel-type id="hour">
@@ -25,16 +25,16 @@
 		<label>Status</label>
 		<description>On or off</description>
 	</channel-type>
-    <channel-type id="enabled">
-        <item-type>Switch</item-type>
-        <label>Enabled (on=yes, off=no)</label>
-        <description>When on, the alarm clock is enabled. When off, no status change will occur ever.</description>
-    </channel-type>
-    <channel-type id="valid">
-        <item-type>Switch</item-type>
-        <label>Valid (on=yes, off=no)</label>
-        <description>When on, the settings are valid. When off, no status change will occur. This may happen when sunrise of sunset time overlaps the switch time.</description>
-    </channel-type>
+	<channel-type id="enabled">
+		<item-type>Switch</item-type>
+		<label>Enabled (on=yes, off=no)</label>
+		<description>When on, the alarm clock is enabled. When off, no status change will occur ever.</description>
+	</channel-type>
+	<channel-type id="valid">
+		<item-type>Switch</item-type>
+		<label>Valid (on=yes, off=no)</label>
+		<description>When on, the settings are valid. When off, no status change will occur. This may happen when sunrise of sunset time overlaps the switch time.</description>
+	</channel-type>
 	<channel-type id="dayEnabled">
 		<item-type>Switch</item-type>
 		<label>Day enabled (on=yes, off=no)</label>
